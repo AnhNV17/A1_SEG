@@ -3,6 +3,7 @@ package a1_1501040012;
 import utils.AttrRef;
 import utils.DOpt;
 import utils.DomainConstraint;
+import utils.NotPossibleException;
 import utils.OptType;
 
 /**
@@ -30,16 +31,16 @@ public class HighEarner extends Customer {
 	 *			if i, n, p, a, in are valid
 	 *				initialize this as HighEarner:<i, n, p, a, in>
 	 *			else
-	 *				print error meassage
+	 *				throws NotPossibleException
 	 *          </pre>
 	 */
 	public HighEarner(@AttrRef("id") Integer i, @AttrRef("name") String n, @AttrRef("phoneNumber") String p,
-			@AttrRef("address") String a, @AttrRef("income") Float in) {
+			@AttrRef("address") String a, @AttrRef("income") Float in) throws NotPossibleException{
 		super(i, n, p, a);
 		if (validateIncome(in))
 			income = in;
 		else
-			System.err.println("HighEarner.inint: invalid income");
+			throw new NotPossibleException("HighEarner.inint: invalid income");
 	}
 
 	/**
@@ -57,7 +58,7 @@ public class HighEarner extends Customer {
 	 * 		if name is valid
 	 * 			set this.name = name
 	 * 		else
-	 * 			print error message
+	 * 			throws NotPossibleException
 	 *          </pre>
 	 */
 	@DOpt(type = OptType.Mutator)
@@ -65,7 +66,7 @@ public class HighEarner extends Customer {
 		if (validateIncome(income))
 			this.income = income;
 		else
-			System.err.println("HighEarner.setIncome: invalid income " + income);
+			throw new NotPossibleException("HighEarner.setIncome: invalid income " + income);
 	}
 
 	/**

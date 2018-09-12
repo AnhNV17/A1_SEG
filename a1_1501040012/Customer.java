@@ -3,6 +3,7 @@ package a1_1501040012;
 import utils.AttrRef;
 import utils.DOpt;
 import utils.DomainConstraint;
+import utils.NotPossibleException;
 import utils.OptType;
 
 /**
@@ -46,18 +47,18 @@ public class Customer implements Comparable<Customer> {
 	 * 		if i, n, p, a are valid
 	 * 			initialize this as Customer:<i, n, p, a>
 	 * 		else
-	 * 			print error message
+	 * 			throws NotPossibleException
 	 *          </pre>
 	 */
 	public Customer(@AttrRef("id") Integer i, @AttrRef("name") String n, @AttrRef("phoneNumber") String p,
-			@AttrRef("address") String a) {
+			@AttrRef("address") String a) throws NotPossibleException {
 		if (validate(i, n, p, a)) {
 			id = i;
 			name = n;
 			phoneNumber = p;
 			address = a;
 		} else {
-			System.err.println("Customer<init>: invalid arguments");
+			throw new NotPossibleException("Customer<init>: invalid arguments");
 		}
 	}
 
@@ -103,16 +104,16 @@ public class Customer implements Comparable<Customer> {
 	 * 		if name is valid
 	 * 			set this.name = name
 	 * 		else
-	 * 			print error message
+	 * 			throws NotPossibleException
 	 *          </pre>
 	 */
 	@DOpt(type = OptType.Mutator)
 	@AttrRef("name")
-	public void setName(String name) {
+	public void setName(String name) throws NotPossibleException{
 		if (validateName(name))
 			this.name = name;
 		else
-			System.err.println("Customer.setName: invalid name " + name);
+			throw new NotPossibleException("Customer.setName: invalid name " + name);
 	}
 
 	/**
@@ -126,10 +127,10 @@ public class Customer implements Comparable<Customer> {
 	 *          </pre>
 	 */
 	private boolean validateName(String name) {
-		if (name != null && name.length() < LENGTH_NAME)
-			return true;
-		else
+		if (name == null || name.length() > LENGTH_NAME)
 			return false;
+		else
+			return true;
 	}
 
 	/**
@@ -148,16 +149,16 @@ public class Customer implements Comparable<Customer> {
 	 * 		if name is valid
 	 * 			set this.phoneNumber = phoneNumber
 	 * 		else
-	 * 			print error message
+	 * 			throws NotPossibleException
 	 *          </pre>
 	 */
 	@DOpt(type = OptType.Mutator)
 	@AttrRef("phoneNumber")
-	public void setPhoneNumber(String phoneNumber) {
+	public void setPhoneNumber(String phoneNumber) throws NotPossibleException{
 		if (validatePhoneNumber(phoneNumber))
 			this.phoneNumber = phoneNumber;
 		else
-			System.err.println("Customer.setPhoneNumber: invalid phoneNumber" + phoneNumber);
+			throw new NotPossibleException("Customer.setPhoneNumber: invalid phoneNumber" + phoneNumber);
 	}
 
 	/**
@@ -171,10 +172,10 @@ public class Customer implements Comparable<Customer> {
 	 *          </pre>
 	 */
 	private boolean validatePhoneNumber(String phoneNumber) {
-		if (phoneNumber != null && phoneNumber.length() < LENGTH_PHONENUMBER)
-			return true;
-		else
+		if (phoneNumber == null || phoneNumber.length() > LENGTH_PHONENUMBER)
 			return false;
+		else
+			return true;
 	}
 
 	/**
@@ -193,7 +194,7 @@ public class Customer implements Comparable<Customer> {
 	 * 		if name is valid
 	 * 			set this.address = address
 	 * 		else
-	 * 			print error message
+	 * 			throws NotPossibleException
 	 *          </pre>
 	 */
 	@DOpt(type = OptType.Mutator)
@@ -202,7 +203,7 @@ public class Customer implements Comparable<Customer> {
 		if (validateAddress(address))
 			this.address = address;
 		else
-			System.err.println("Customer.setAddress: invalid address" + address);
+			throw new NotPossibleException("Customer.setAddress: invalid address" + address);
 	}
 
 	/**
@@ -216,10 +217,10 @@ public class Customer implements Comparable<Customer> {
 	 *          </pre>
 	 */
 	private boolean validateAddress(String address) {
-		if (address != null && address.length() < LENGTH_ADDRESS)
-			return true;
-		else
+		if (address == null || address.length() > LENGTH_ADDRESS)
 			return false;
+		else
+			return true;
 	}
 
 	/**
@@ -268,7 +269,11 @@ public class Customer implements Comparable<Customer> {
 	 */
 	@Override
 	public int compareTo(Customer other) {
-		int value = this.name.compareTo(other.name);
+		int value = (this.name).compareTo(other.name);
+		if (value == 0)
+			System.out.println("Two customer have the same name or maybe they are one person! Because the return value is ");
+		else
+			System.out.println("They have different name!!! Because the return value is ");
 		return value;
 	}
 
